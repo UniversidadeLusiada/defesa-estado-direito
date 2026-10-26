@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>A Defesa do Estado de Direito no Século XXI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Edição digital folheável — Universidade Lusíada Editora, 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one-screen reader — slim header, the book on a "reading desk", control rail below; sumário slides in from the left. */
+:root{
+  --desk:#dde2ea; --desk-2:#cfd6e1; --ink:#1b2231; --muted:#566074; --accent:#4b5f8d; --accent-ink:#ffffff;
+  --panel:#f5f6f9; --line:#c3cbd8; --paper:#fbfbf8; --shadow:rgba(24,32,52,.28);
+  --serif:"EB Garamond","Adobe Garamond Pro",Garamond,"Times New Roman",serif;
+  --sans:"Public Sans","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --desk:#141923; --desk-2:#0f131b; --ink:#e4e8f0; --muted:#98a2b6; --accent:#a3b5dc; --accent-ink:#121722;
+  --panel:#1c2230; --line:#2e3646; --paper:#f4f3ee; --shadow:rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --desk:#141923; --desk-2:#0f131b; --ink:#e4e8f0; --muted:#98a2b6; --accent:#a3b5dc; --accent-ink:#121722;
+  --panel:#1c2230; --line:#2e3646; --paper:#f4f3ee; --shadow:rgba(0,0,0,.6); color-scheme:dark}
+
+html,body{height:100%}
+body{background:var(--desk);color:var(--ink);font-family:var(--sans);overflow:hidden}
+button,input{font:inherit;color:inherit}
+.app{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;grid-template-columns:minmax(0,1fr)}
+
+/* header */
+.top{display:flex;align-items:center;gap:16px;padding-block:10px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  border-bottom:1px solid var(--line);background:var(--panel)}
+.brand{min-width:0;flex:1}
+.eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.title{font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.15;margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.title i{font-weight:500;color:var(--muted)}
+.tools{display:flex;gap:6px;flex-shrink:0}
+.btn{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 12px;border-radius:6px;border:1px solid var(--line);
+  background:transparent;cursor:pointer;font-size:13px;font-weight:500;white-space:nowrap}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn:focus-visible,.nav:focus-visible,.toc a:focus-visible,#go:focus-visible,#slider:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn svg{width:17px;height:17px;flex-shrink:0}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{color:var(--accent-ink);filter:brightness(1.08)}
+
+/* stage + book */
+.stage{position:relative;overflow:hidden;display:grid;place-items:center;min-height:0;
+  background:radial-gradient(ellipse at 50% 45%, var(--desk) 0%, var(--desk-2) 100%)}
+.bookwrap{position:relative;transition:transform .55s cubic-bezier(.4,.1,.2,1)}
+.bookwrap.nomove{transition:none}
+#book{position:relative;perspective:2600px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+#book.dragging{cursor:grabbing}
+.half{position:absolute;top:0;height:100%}
+.face{position:absolute;inset:0;background-color:var(--paper);background-repeat:no-repeat;background-size:400% 100%;overflow:hidden}
+.face::before{content:attr(data-n);position:absolute;inset:0;display:grid;place-items:center;font-family:var(--serif);font-size:28px;color:#b9bfca;z-index:0}
+.face.loaded::before{content:none}
+.face.empty{background:none!important}
+.face.empty::before{content:none}
+.face.blank::before{content:none}
+.face .gut{position:absolute;inset:0;pointer-events:none}
+.face.l .gut{background:linear-gradient(to left,rgba(0,0,0,.16),rgba(0,0,0,.04) 3.5%,rgba(0,0,0,0) 9%)}
+.face.r .gut{background:linear-gradient(to right,rgba(0,0,0,.18),rgba(0,0,0,.05) 3.5%,rgba(0,0,0,0) 9%)}
+.face.cover .gut{background:linear-gradient(to right,rgba(255,255,255,.12),rgba(0,0,0,.1) 1.2%,rgba(0,0,0,0) 4%)}
+.face.empty .gut{display:none}
+.page-shadow{box-shadow:0 18px 40px -12px var(--shadow),0 2px 6px rgba(0,0,0,.12)}
+.half.hide{box-shadow:none}
+.edge{position:absolute;top:2px;bottom:2px;pointer-events:none;
+  background:repeating-linear-gradient(to right,#e9e7e0 0 1px,#cfccc4 1px 2px)}
+#flip{position:absolute;top:0;height:100%;transform-style:preserve-3d;z-index:5;will-change:transform;display:none}
+#flip .face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+#flip .back{transform:rotateY(180deg)}
+.shade{position:absolute;inset:0;pointer-events:none;opacity:0}
+#under{position:absolute;top:0;height:100%;pointer-events:none;z-index:4;display:none}
+
+/* footer rail */
+.rail{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding-block:10px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  border-top:1px solid var(--line);background:var(--panel)}
+.navs{display:flex;gap:4px}
+.nav{width:38px;height:38px;border-radius:6px;border:1px solid var(--line);background:transparent;cursor:pointer;display:grid;place-items:center}
+.nav:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.nav:disabled{opacity:.35;cursor:default}
+.nav svg{width:18px;height:18px}
+.track{display:flex;flex-direction:column;gap:4px;min-width:0}
+#slider{width:100%;accent-color:var(--accent);margin:0}
+.where{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted);min-width:0}
+.where b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+#chap{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--serif);font-style:italic;font-size:14px}
+.goto{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+#go{width:64px;height:36px;border:1px solid var(--line);border-radius:6px;background:var(--desk);padding:0 8px;text-align:center;font-variant-numeric:tabular-nums}
+
+/* sumário drawer */
+.scrim{position:fixed;inset:0;background:rgba(10,14,22,.45);z-index:30;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;bottom:0;left:0;width:min(440px,92vw);z-index:31;background:var(--panel);border-right:1px solid var(--line);
+  transform:translateX(-102%);transition:transform .3s cubic-bezier(.3,.1,.2,1);display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px)}
+.drawer.on{transform:none}
+.dhead{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--line)}
+.dhead h2{font-family:var(--serif);font-size:24px;font-weight:600;margin:0;letter-spacing:.02em}
+.dbody{overflow-y:auto;padding:8px 0 24px;min-height:0;flex:1}
+.toc{list-style:none;margin:0;padding:0}
+.toc a{display:grid;grid-template-columns:1fr auto;gap:12px;padding:9px 18px;text-decoration:none;color:inherit;border-left:3px solid transparent}
+.toc a:hover{background:var(--desk)}
+.toc a.cur{border-left-color:var(--accent);background:var(--desk)}
+.toc .pg{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px;padding-top:3px}
+.toc .t{font-family:var(--serif);font-size:16px;line-height:1.25}
+.toc .a{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+.toc .sec a{margin-top:10px}
+.toc .sec .t{font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);line-height:1.45}
+.toc .sec .pg{color:var(--accent)}
+.colophon{margin:22px 18px 0;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.6}
+.colophon dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0}
+.colophon dt{text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;padding-top:2px}
+.colophon dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.colophon a{color:var(--accent)}
+
+/* zoom reader */
+.zoom{position:fixed;inset:0;z-index:40;background:var(--desk-2);display:flex;flex-direction:column}
+.zbar{display:flex;align-items:center;gap:8px;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:var(--panel);border-bottom:1px solid var(--line);padding-top:max(10px,env(safe-area-inset-top,0px))}
+.zbar .lbl{flex:1;font-size:13px;color:var(--muted);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zscroll{flex:1;overflow:auto;padding:20px 16px 40px;min-height:0}
+.zpages{display:flex;flex-direction:column;align-items:center;gap:20px;margin:0 auto}
+.zpage{width:100%;aspect-ratio:921/1300;max-width:100%;background-color:var(--paper);background-repeat:no-repeat;background-size:400% 100%;box-shadow:0 10px 30px -10px var(--shadow)}
+
+@media (max-width:700px){
+  .title{font-size:17px}
+  .btn .lab{display:none}
+  .btn{padding:0 9px}
+  .rail{grid-template-columns:1fr auto;gap:10px}
+  #firstBtn,#lastBtn{display:none}
+  .track{grid-column:1/-1;order:-1}
+  #chap{display:none}
+}
+@media (prefers-reduced-motion:reduce){.bookwrap,.drawer,.scrim{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <div class="eyebrow">Universidade Lusíada Editora · Afonso d'Oliveira Martins &amp; Juan Manuel López Ulla (coord.)</div>
+      <h1 class="title">A Defesa do Estado de Direito no Século XXI <i>· La defensa del Estado de Derecho en el siglo XXI</i></h1>
+    </div>
+    <div class="tools">
+      <button class="btn primary" id="tocBtn" aria-label="Sumário"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h13"/></svg><span class="lab">Sumário</span></button>
+      <button class="btn" id="zoomBtn" aria-label="Ampliar páginas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5M11 8v6M8 11h6"/></svg><span class="lab">Ampliar</span></button>
+      <button class="btn" id="fsBtn" aria-label="Ecrã inteiro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="lab">Ecrã inteiro</span></button>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+    <div class="bookwrap" id="wrap">
+      <div id="book" role="region" aria-label="Livro — use as setas do teclado para folhear">
+        <div class="edge" id="edgeL"></div><div class="edge" id="edgeR"></div>
+        <div class="half page-shadow" id="L"><div class="face l"><div class="gut"></div></div></div>
+        <div class="half page-shadow" id="R"><div class="face r"><div class="gut"></div></div></div>
+        <div id="under"></div>
+        <div id="flip">
+          <div class="face front"><div class="gut"></div><div class="shade"></div></div>
+          <div class="face back"><div class="gut"></div><div class="shade"></div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="rail">
+    <div class="navs first">
+      <button class="nav" id="firstBtn" aria-label="Capa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18l-6-6 6-6M7 6v12"/></svg></button>
+      <button class="nav" id="prevBtn" aria-label="Página anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    </div>
+    <div class="track">
+      <input type="range" id="slider" min="1" max="640" value="1" aria-label="Posição no livro">
+      <div class="where"><span><b id="pos">Capa</b> <span id="tot">· 636 páginas</span></span><span id="chap"></span></div>
+    </div>
+    <div class="navs">
+      <label class="goto" for="go"><span class="lab">Ir para p.</span><input id="go" inputmode="numeric" placeholder="—" autocomplete="off"></label>
+      <button class="nav" id="nextBtn" aria-label="Página seguinte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      <button class="nav" id="lastBtn" aria-label="Contracapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18l6-6-6-6M17 6v12"/></svg></button>
+    </div>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Sumário" aria-hidden="true">
+  <div class="dhead"><h2>Sumário</h2><button class="nav" id="tocClose" aria-label="Fechar sumário"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="dbody">
+    <ul class="toc" id="toc"></ul>
+    <div class="colophon">
+      <dl>
+        <dt>Editora</dt><dd>Universidade Lusíada Editora · Lisboa, 2026</dd>
+        <dt>ISBN</dt><dd>978-989-640-302-7</dd>
+        <dt>DOI</dt><dd><a href="https://doi.org/10.34628/380w-XZ28" target="_blank" rel="noopener">10.34628/380w-XZ28</a></dd>
+        <dt>Dep. legal</dt><dd>572467/26</dd>
+        <dt>Licença</dt><dd><a href="https://creativecommons.org/licenses/by/4.0/deed.pt" target="_blank" rel="noopener">Creative Commons Atribuição 4.0 Internacional</a></dd>
+      </dl>
+    </div>
+  </div>
+</aside>
+
+<div class="zoom" id="zoom" hidden>
+  <div class="zbar">
+    <span class="lbl" id="zlbl"></span>
+    <button class="nav" id="zOut" aria-label="Reduzir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 12h12"/></svg></button>
+    <button class="nav" id="zIn" aria-label="Aumentar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 12h12M12 6v12"/></svg></button>
+    <button class="btn" id="zClose">Fechar</button>
+  </div>
+  <div class="zscroll" id="zscroll"><div class="zpages" id="zpages"></div></div>
+</div>
+
+<script>
+(() => {
+  const N = 640, OFF = 2, LAST_PRINTED = 636, RATIO = 921 / 1300;
+  const TOC = [
+    [0,"Prólogo",9],
+    [1,"I – A defesa do Estado de Direito e o combate à corrupção",11],
+    [0,"Fortalecimiento de la transparencia en lo público y lucha contra la corrupción: evolución de los mecanismos anticorrupción en Chile",13,"Francisco Javier Sanz Salguero"],
+    [0,"Corrupção e subsistência do Estado de Direito",35,"José Daniel Tavares"],
+    [1,"II – Estado de Direito e sistema judicial",57],
+    [0,"El derecho a la indemnidad de las personas trabajadoras y estado social de derecho",59,"Dulce Soriano Cortés"],
+    [0,"Resolución alternativa a las disputas jurisdiccionales: la multiplicación de sujetos extraños a la magistratura y la crisis de los modelos clásicos occidentales. Una panorámica de Derecho Comparado",83,"Giorgia Pavani y Laura Alessandra Nocera"],
+    [0,"El poder judicial europeo: garantía del estado de derecho y herramienta de refuerzo de la integración europea",107,"Juan Gálvez Galisteo"],
+    [0,"La defensa del Estado de Derecho por el Tribunal de Justicia de la Unión Europea",127,"Magdalena Matusiak-Frącczak"],
+    [0,"A decisão judicial computadorizada em matéria penal – antevisão de um futuro incerto para o Direito e para a Justiça",155,"Maria Leonor Esteves"],
+    [0,"Presupuestos y condicionantes de la justicia constitucional como defensora del Estado de Derecho",163,"Miguel Revenga Sánchez"],
+    [0,"Identidade constitucional e Estado de Direito na área de liberdade, segurança e justiça – desafios e paradigmas de uma mudança",183,"Raquel Cardoso"],
+    [0,"Do activismo judicial à judicialização: o papel do TJUE na definição de critérios de regulação",209,"Rui M. Marrana"],
+    [1,"III – O sistema de equilíbrio de poderes e as exigências do Estado de Direito",233],
+    [0,"Rule of law, the judiciary and judicial independence: fighting for survival against political power",235,"Cristina Aragão Seia"],
+    [0,"A evolução da resposta europeia no combate ao conteúdo prejudicial: da Diretiva (UE) 2018/1808 ao Regulamento (UE) 2022/2065",279,"Eduardo Oliveira e Sousa, Cristina Aragão Seia"],
+    [0,"La condicionalidad financiera como mecanismo de protección del Estado de Derecho en la Unión Europea",305,"Emilia Girón Reguera"],
+    [0,"Eleições, terrorismo e a política do medo: como a violência transnacional condiciona o Estado de Direito Democrático",329,"Gabriel Maia Dias, João Carlos Marques Simões"],
+    [0,"Concepción y alcance de la protección internacional en el nuevo pacto europeo de migración y asilo",357,"Juan Manuel López Ulla"],
+    [0,"Reinterpretación del contenido tradicional del derecho de propiedad privada a la luz de la jurisprudencia constitucional: algunos ejemplos",379,"María Paz Sánchez González"],
+    [0,"Constitucionalismo e Epistemologias do Sul: Pelo Buen-Vivir no Brasil",409,"Marlei Angela Ribeiro dos Santos, Émelyn Linhares, Thais Janaina Wenczenovicz"],
+    [0,"La división de poderes frente a las reformas constitucionales que restructuran al poder judicial en México",415,"Rocío Guadalupe Quiñones Andrade"],
+    [1,"IV – Novas ameaças ao Estado de Direito",453],
+    [0,"A defesa do Estado de Direito na era digital – conflitos entre direitos humanos. [A liberdade de informação e o controlo de conteúdos. O exemplo do direito da propriedade intelectual.]",455,"Alberto Ribeiro de Almeida"],
+    [0,"Estado de Direito e inteligência artificial: na encruzilhada entre escolhas humanas e escolhas de IA?",477,"Ana Paula Filipe, Fernanda Duarte, Filipa Pais d'Aguiar, Nuno Silva"],
+    [0,"O problema das fake news e a salvaguarda do Estado de Direito: a necessidade de intervenção penal",503,"André da Silva Paulos"],
+    [0,"Dignidade e trabalho: a nova escravatura?",527,"António José Moreira"],
+    [0,"Comunicação em Massa, Mulheres Indígenas e Direitos Fundamentais",549,"Émelyn Linhares, Thais Janaina Wenczenovicz, Marlei Angela Ribeiro dos Santos"],
+    [0,"Populismo: crisis de los fundamentos filosóficos del Estado de Derecho",555,"José María Moreno Soriano"],
+    [0,"Precedentes y principios jurídicos contemporáneos en el diseño español del «estado social y democrático de derecho» (art. 1.1 CE)",579,"Juan Carlos Monterde García"],
+    [0,"La curación de contenidos en la era digital: ¿Hacia un marco jurídico específico?",603,"Paula Sáez Álvarez"]
+  ];
+
+  const $ = id => document.getElementById(id);
+  const stage=$('stage'), wrap=$('wrap'), book=$('book'), Lh=$('L'), Rh=$('R'), flip=$('flip'), under=$('under');
+  const Lf=Lh.firstElementChild, Rf=Rh.firstElementChild, Ff=flip.children[0], Bf=flip.children[1];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let spread = true, pw = 400, ph = 565;
+  let cur = 0;               // spread index (spread mode) or pdf page (portrait)
+  let anim = null, queued = 0;
+
+  /* ---------- page model ---------- */
+  const leftOf  = s => s === 0 ? 0 : 2 * s;                  // 0 = no page
+  const rightOf = s => s === N / 2 ? 0 : 2 * s + 1;
+  const maxView = () => spread ? N / 2 : N;
+  const minView = () => spread ? 0 : 1;
+  const pagesOfView = v => spread ? [leftOf(v), rightOf(v)] : [0, v];
+  const viewOfPage = p => spread ? Math.floor(p / 2) : p;
+  const printed = p => (p >= 3 && p <= N - 2) ? p - OFF : null;
+  const firstPage = v => { const [a, b] = pagesOfView(v); return a || b; };
+
+  /* ---------- images ---------- */
+  const cache = new Map();
+  const spriteUrl = p => 'p/s' + String(Math.floor((p - 1) / 4)).padStart(3, '0') + '.webp';
+  function preload(p) {
+    if (p < 1 || p > N) return;
+    const u = spriteUrl(p);
+    if (cache.has(u)) return cache.get(u);
+    const img = new Image();
+    const pr = new Promise(res => { img.onload = () => res(true); img.onerror = () => res(false); });
+    img.decoding = 'async'; img.src = u;
+    const rec = { img, pr }; cache.set(u, rec); return rec;
+  }
+  function paint(face, p, side) {
+    face.dataset.p = p || '';
+    face.classList.toggle('empty', !p);
+    face.classList.toggle('cover', p === 1 || p === N);
+    face.classList.toggle('blank', p === 2 || p === N - 1);
+    if (side !== undefined) { face.classList.toggle('l', side === 'l'); face.classList.toggle('r', side === 'r'); }
+    if (!p) { face.style.backgroundImage = ''; face.classList.remove('loaded'); return; }
+    const n = printed(p); face.dataset.n = n ? n : '';
+    const k = (p - 1) % 4, u = spriteUrl(p);
+    face.style.backgroundImage = `url("${u}")`;
+    face.style.backgroundPosition = `${k * 100 / 3}% 0`;
+    const rec = preload(p);
+    face.classList.remove('loaded');
+    rec.pr.then(ok => { if (ok && face.dataset.p == p) face.classList.add('loaded'); });
+  }
+  function warm(v) {
+    for (let d = -3; d <= 4; d++) {
+      const w = v + d; if (w < minView() || w > maxView()) continue;
+      pagesOfView(w).forEach(p => p && preload(p));
+    }
+  }
+
+  /* ---------- layout ---------- */
+  function shiftFor(v) {
+    if (!spread) return 0;
+    const [a, b] = pagesOfView(v);
+    return !a ? -pw / 2 : !b ? pw / 2 : 0;
+  }
+  function layout() {
+    const r = stage.getBoundingClientRect();
+    const padX = 20, padY = 18;
+    const W = Math.max(200, r.width - padX * 2), H = Math.max(200, r.height - padY * 2);
+    const pS = Math.min(H * RATIO, W / 2), pP = Math.min(H * RATIO, W);
+    const wantSpread = W >= 620 && pS >= pP * 0.78;
+    const firstP = firstPage(cur) || 1;
+    const was = spread;
+    spread = wantSpread;
+    pw = Math.floor(spread ? pS : pP); ph = Math.floor(pw / RATIO);
+    if (was !== spread) cur = spread ? viewOfPage(firstP) : Math.max(1, firstP);  // stay on the same page across modes
+    book.style.width = (spread ? pw * 2 : pw) + 'px';
+    book.style.height = ph + 'px';
+    Lh.style.cssText = `left:0;width:${pw}px`;
+    Rh.style.cssText = `left:${spread ? pw : 0}px;width:${pw}px`;
+    Lh.style.display = spread ? '' : 'none';
+    render(true);
+  }
+
+  /* ---------- static render ---------- */
+  function setEdges(v) {
+    const eL = $('edgeL'), eR = $('edgeR');
+    if (!spread) { eL.style.display = eR.style.display = 'none'; return; }
+    const [a, b] = pagesOfView(v);
+    const fracL = a ? a / N : 0, fracR = b ? (N - b) / N : 0;
+    const wL = a ? Math.round(1 + fracL * 7) : 0, wR = b ? Math.round(1 + fracR * 7) : 0;
+    eL.style.cssText = `display:${wL ? 'block' : 'none'};left:${-wL}px;width:${wL}px`;
+    eR.style.cssText = `display:${wR ? 'block' : 'none'};left:${pw * (spread ? 2 : 1)}px;width:${wR}px`;
+  }
+  function render(instant) {
+    const [a, b] = pagesOfView(cur);
+    if (spread) { paint(Lf, a, 'l'); Lh.classList.toggle('page-shadow', !!a); }
+    paint(Rf, b, spread ? 'r' : null);
+    Rh.classList.toggle('page-shadow', !!b);
+    flip.style.display = 'none'; under.style.display = 'none';
+    if (instant) wrap.classList.add('nomove');
+    wrap.style.transform = `translateX(${shiftFor(cur)}px)`;
+    if (instant) { wrap.offsetWidth; wrap.classList.remove('nomove'); }
+    setEdges(cur);
+    warm(cur);
+    updateUI();
+  }
+
+  /* ---------- flip animation ---------- */
+  function beginFlip(dir) {
+    const to = cur + dir;
+    if (to < minView() || to > maxView()) return null;
+    const from = cur;
+    const [fa, fb] = pagesOfView(from), [ta, tb] = pagesOfView(to);
+    const st = { dir, from, to, t: 0, s0: shiftFor(from), s1: shiftFor(to) };
+    wrap.classList.add('nomove');
+    flip.style.display = 'block';
+    flip.style.width = pw + 'px';
+    if (spread) {
+      if (dir > 0) {
+        paint(Lf, fa, 'l'); paint(Rf, tb, 'r');
+        flip.style.left = pw + 'px'; flip.style.transformOrigin = 'left center';
+        paint(Ff, fb, 'r'); paint(Bf, ta, 'l');
+        under.style.cssText = `display:block;left:${pw}px;width:${pw}px;background:linear-gradient(to right,rgba(0,0,0,.35),rgba(0,0,0,0) 60%)`;
+      } else {
+        paint(Lf, ta, 'l'); paint(Rf, fb, 'r');
+        flip.style.left = '0px'; flip.style.transformOrigin = 'right center';
+        paint(Ff, fa, 'l'); paint(Bf, tb, 'r');
+        under.style.cssText = `display:block;left:0;width:${pw}px;background:linear-gradient(to left,rgba(0,0,0,.35),rgba(0,0,0,0) 60%)`;
+      }
+      Lh.classList.toggle('page-shadow', !!Lf.dataset.p);
+      Rh.classList.toggle('page-shadow', !!Rf.dataset.p);
+      setEdges(to);
+    } else {
+      flip.style.left = '0px'; flip.style.transformOrigin = 'left center';
+      if (dir > 0) { paint(Rf, to, null); paint(Ff, from, null); }
+      else { paint(Rf, from, null); paint(Ff, to, null); }
+      paint(Bf, 0, null); Bf.classList.remove('empty'); Bf.style.backgroundImage = 'none';
+      under.style.cssText = `display:block;left:0;width:${pw}px;background:linear-gradient(to right,rgba(0,0,0,.3),rgba(0,0,0,0) 70%)`;
+    }
+    Ff.querySelector('.shade').style.background = (spread && dir < 0)
+      ? 'linear-gradient(to left,rgba(0,0,0,.0),rgba(0,0,0,.45))' : 'linear-gradient(to right,rgba(0,0,0,.0),rgba(0,0,0,.45))';
+    Bf.querySelector('.shade').style.background = (spread && dir < 0)
+      ? 'linear-gradient(to right,rgba(0,0,0,.0),rgba(0,0,0,.35))' : 'linear-gradient(to left,rgba(0,0,0,.0),rgba(0,0,0,.35))';
+    setT(st, 0);
+    return st;
+  }
+  function setT(st, t) {
+    st.t = t;
+    let ang;
+    if (spread) ang = st.dir > 0 ? -180 * t : 180 * t;
+    else ang = st.dir > 0 ? -180 * t : -180 * (1 - t);
+    flip.style.transform = `rotateY(${ang}deg)`;
+    const s = Math.sin(Math.abs(ang) * Math.PI / 180);
+    const front = Math.abs(ang) < 90;
+    Ff.querySelector('.shade').style.opacity = front ? (s * 0.9).toFixed(3) : 0;
+    Bf.querySelector('.shade').style.opacity = !front ? (s * 0.9).toFixed(3) : 0;
+    flip.style.filter = `drop-shadow(${(st.dir > 0 ? -1 : 1) * s * 14}px 6px ${8 + s * 14}px rgba(0,0,0,${(0.12 + s * 0.22).toFixed(2)}))`;
+    const uprog = (spread || st.dir > 0) ? 1 - t : t;
+    under.style.opacity = (Math.sin(uprog * Math.PI / 2) * (spread ? 1 : 0.8) * (0.25 + 0.75 * s)).toFixed(3);
+    if (!spread) flip.style.opacity = Math.abs(ang) > 100 ? Math.max(0, 1 - (Math.abs(ang) - 100) / 80).toFixed(3) : 1;
+    else flip.style.opacity = 1;
+    const sh = st.s0 + (st.s1 - st.s0) * t;
+    wrap.style.transform = `translateX(${sh}px)`;
+  }
+  const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  function finish(st, complete, dur, fn) {
+    const t0 = st.t, target = complete ? 1 : 0;
+    const D = reduce ? 1 : Math.max(120, dur * Math.abs(target - t0));
+    const start = performance.now();
+    anim = st;
+    function step(now) {
+      const k = Math.min(1, (now - start) / D);
+      setT(st, t0 + (target - t0) * fn(k));
+      if (k < 1) requestAnimationFrame(step);
+      else {
+        if (complete) cur = st.to;
+        anim = null;
+        render(false);
+        if (queued) { const q = queued; queued = 0; go(q, 420); }
+      }
+    }
+    requestAnimationFrame(step);
+  }
+  function go(dir, dur = 760) {
+    if (anim) { queued = dir; return; }
+    const st = beginFlip(dir);
+    if (!st) return;
+    finish(st, true, dur, ease);
+  }
+  function jump(v) {
+    if (anim) return;
+    v = Math.max(minView(), Math.min(maxView(), v));
+    if (v === cur) return;
+    if (Math.abs(v - cur) === 1) return go(v - cur);
+    cur = v; render(false);
+  }
+  const jumpToPdf = p => jump(viewOfPage(Math.max(1, Math.min(N, p))));
+  const jumpToPrinted = n => jumpToPdf(n + OFF);
+
+  /* ---------- drag / click ---------- */
+  let drag = null;
+  book.addEventListener('pointerdown', e => {
+    if (anim || e.button > 0) return;
+    const r = book.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const dir = x > r.width / 2 ? 1 : -1;
+    drag = { x0: e.clientX, dir, st: null, id: e.pointerId, w: r.width, lastX: e.clientX, lastT: performance.now(), v: 0 };
+    book.setPointerCapture(e.pointerId);
+  });
+  book.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x0;
+    const now = performance.now();
+    drag.v = (e.clientX - drag.lastX) / Math.max(1, now - drag.lastT); drag.lastX = e.clientX; drag.lastT = now;
+    if (!drag.st && Math.abs(dx) > 8) {
+      drag.st = beginFlip(drag.dir);
+      if (!drag.st) { drag = null; return; }
+      book.classList.add('dragging');
+    }
+    if (drag.st) {
+      const span = spread ? drag.w * 0.75 : drag.w * 1.1;
+      const t = Math.max(0, Math.min(1, (drag.dir > 0 ? -dx : dx) / span));
+      setT(drag.st, t);
+    }
+  });
+  function endDrag(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    const d = drag; drag = null; book.classList.remove('dragging');
+    if (d.st) {
+      const fling = (d.dir > 0 ? -d.v : d.v) > 0.45;
+      finish(d.st, d.st.t > 0.3 || fling, 520, easeOut);
+    } else if (e.type === 'pointerup') {
+      go(d.dir);
+    }
+  }
+  book.addEventListener('pointerup', endDrag);
+  book.addEventListener('pointercancel', endDrag);
+  book.addEventListener('dblclick', openZoom);
+
+  /* ---------- UI ---------- */
+  const slider = $('slider'), pos = $('pos'), chap = $('chap'), goIn = $('go');
+  function labelOf(v) {
+    const [a, b] = pagesOfView(v);
+    const nums = [a, b].filter(Boolean).map(printed).filter(Boolean);
+    if (a === N || b === N) return 'Contracapa';
+    if ((a === 1 || b === 1)) return 'Capa';
+    if (!nums.length) return 'Guarda';
+    return nums.length === 2 ? `pp. ${nums[0]}–${nums[1]}` : `p. ${nums[0]}`;
+  }
+  function chapterAt(p) {
+    const n = (printed(p) || 0);
+    let found = null;
+    for (const e of TOC) if (e[2] <= n) found = e; else break;
+    return found;
+  }
+  const tocEl = $('toc');
+  TOC.forEach((e, i) => {
+    const li = document.createElement('li'); if (e[0]) li.className = 'sec';
+    const a = document.createElement('a'); a.href = '#p' + e[2]; a.dataset.i = i;
+    a.innerHTML = `<span><span class="t"></span>${e[3] ? '<span class="a"></span>' : ''}</span><span class="pg">${e[2]}</span>`;
+    a.querySelector('.t').textContent = e[1];
+    if (e[3]) a.querySelector('.a').textContent = e[3];
+    a.addEventListener('click', ev => { ev.preventDefault(); closeToc(); jumpToPrinted(e[2]); });
+    li.appendChild(a); tocEl.appendChild(li);
+  });
+  function updateUI() {
+    const p = firstPage(cur) || 1;
+    const [a, b] = pagesOfView(cur);
+    slider.value = b || a || 1;
+    pos.textContent = labelOf(cur);
+    const c = chapterAt(b || a);
+    chap.textContent = c ? (c[3] ? c[3] + ' — ' : '') + c[1] : '';
+    chap.title = chap.textContent;
+    tocEl.querySelectorAll('a.cur').forEach(x => x.classList.remove('cur'));
+    if (c) { const el = tocEl.querySelector(`a[data-i="${TOC.indexOf(c)}"]`); el && el.classList.add('cur'); }
+    $('prevBtn').disabled = $('firstBtn').disabled = cur <= minView();
+    $('nextBtn').disabled = $('lastBtn').disabled = cur >= maxView();
+  }
+  slider.addEventListener('input', () => { pos.textContent = labelOf(viewOfPage(+slider.value)); });
+  slider.addEventListener('change', () => jumpToPdf(+slider.value));
+  $('prevBtn').onclick = () => go(-1);
+  $('nextBtn').onclick = () => go(1);
+  $('firstBtn').onclick = () => jump(minView());
+  $('lastBtn').onclick = () => jump(maxView());
+  goIn.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const n = parseInt(goIn.value, 10);
+    if (n >= 1 && n <= LAST_PRINTED) { jumpToPrinted(n); goIn.blur(); goIn.value = ''; }
+    else { goIn.value = ''; goIn.placeholder = '1–636'; }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.target === goIn || e.target === slider) return;
+    if (!$('zoom').hidden) { if (e.key === 'Escape') closeZoom(); return; }
+    if ($('drawer').classList.contains('on')) { if (e.key === 'Escape') closeToc(); return; }
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+    else if (e.key === 'Home') jump(minView());
+    else if (e.key === 'End') jump(maxView());
+  });
+
+  /* sumário */
+  const drawer = $('drawer'), scrim = $('scrim');
+  function openToc() { drawer.classList.add('on'); scrim.classList.add('on'); drawer.setAttribute('aria-hidden', 'false');
+    const c = tocEl.querySelector('a.cur'); (c || tocEl.querySelector('a')).focus({ preventScroll: true }); c && c.scrollIntoView({ block: 'center' }); }
+  function closeToc() { drawer.classList.remove('on'); scrim.classList.remove('on'); drawer.setAttribute('aria-hidden', 'true'); }
+  $('tocBtn').onclick = openToc; $('tocClose').onclick = closeToc; scrim.onclick = closeToc;
+
+  /* zoom */
+  let zw = 1;
+  function zoomWidth() { const base = Math.min(921, $('zscroll').clientWidth - 32); return Math.round(base * zw); }
+  function openZoom() {
+    const z = $('zoom'), box = $('zpages'); box.innerHTML = '';
+    const ps = pagesOfView(cur).filter(Boolean);
+    ps.forEach(p => {
+      const d = document.createElement('div'); d.className = 'zpage';
+      d.style.backgroundImage = `url("${spriteUrl(p)}")`;
+      d.style.backgroundPosition = `${((p - 1) % 4) * 100 / 3}% 0`;
+      box.appendChild(d);
+    });
+    $('zlbl').textContent = labelOf(cur);
+    z.hidden = false; zw = 1; applyZoom(); $('zscroll').scrollTop = 0; $('zClose').focus();
+  }
+  function applyZoom() { const w = zoomWidth(); $('zpages').style.width = w + 'px'; $('zpages').querySelectorAll('.zpage').forEach(d => d.style.width = w + 'px'); }
+  function closeZoom() { $('zoom').hidden = true; $('zoomBtn').focus(); }
+  $('zoomBtn').onclick = openZoom; $('zClose').onclick = closeZoom;
+  $('zIn').onclick = () => { zw = Math.min(2.2, zw + 0.3); applyZoom(); };
+  $('zOut').onclick = () => { zw = Math.max(0.7, zw - 0.3); applyZoom(); };
+
+  /* fullscreen */
+  const fsBtn = $('fsBtn');
+  if (!document.documentElement.requestFullscreen) fsBtn.hidden = true;
+  fsBtn.onclick = async () => {
+    try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); }
+    catch (_) { fsBtn.hidden = true; }
+  };
+
+  /* boot */
+  const m = /^#p(\d{1,3})$/.exec(location.hash || '');
+  new ResizeObserver(() => { if (!anim && !drag) layout(); }).observe(stage);
+  layout();
+  if (m) { const n = +m[1]; if (n >= 1 && n <= LAST_PRINTED) { cur = viewOfPage(n + OFF); render(true); } }
+  window.__book = { go, jump, jumpToPrinted, state: () => ({ cur, spread, pw, ph }) };
+})();
+</script>
+</body>
+</html>
